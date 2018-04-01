@@ -1,11 +1,11 @@
-import convict from 'convict';
+const convict = require('convict');
 
 
 const config = convict({
     weather: {
         apiToken: {
             doc:     'The weather API token',
-            default: null,
+            default: '',
             format:  String,
             env:     'WEATHER_API_TOKEN'
         }
@@ -13,4 +13,4 @@ const config = convict({
 });
 
 
-export default config;
+module.exports = config;

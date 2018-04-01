@@ -1,0 +1,126 @@
+@font-face {
+  font-family: 'Weather';
+  src: url("./weather.ttf") format('truetype');
+}
+.weather__icon {
+  display: inline-block;
+  font-family: "Weather";
+  display: inline-block;
+  font-style: normal;
+  color: #ddd;
+}
+.weather__icon--clear-sky:before {
+  content: "A";
+}
+.weather__icon--few-clouds:before,
+.weather__icon--scattered-clouds:before {
+  content: "D";
+}
+.weather__icon--broken-clouds:before,
+.weather__icon--overcast-clouds:before {
+  content: "P";
+}
+.weather__icon--light-rain:before,
+.weather__icon--moderate-rain:before {
+  content: "F";
+}
+.weather__icon--light-snow:before,
+.weather__icon--snow:before,
+.weather__icon--heavy-snow:before,
+.weather__icon--sleet:before,
+.weather__icon--shower-sleet:before,
+.weather__icon--light-rain-and-snow:before,
+.weather__icon--rain-and-snow:before,
+.weather__icon--light-shower-snow:before,
+.weather__icon--shower-snow:before,
+.weather__icon--heavy-shower-snow:before {
+  content: "W";
+}
+.weather__icon--heavy-intensity-rain:before,
+.weather__icon--very-heavy-rain:before,
+.weather__icon--extreme-rain:before,
+.weather__icon--freezing-rain:before,
+.weather__icon--light-intensity-shower-rain:before,
+.weather__icon--shower-rain:before,
+.weather__icon--heavy-intensity-shower-rain:before,
+.weather__icon--ragged-shower-rain:before {
+  content: "X";
+}
+.weather__weather .widget__body {
+  padding: 15px 15px 15px 30px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.weather__weather__current {
+  margin-right: 30px;
+  align-self: flex-start;
+  white-space: nowrap;
+}
+.weather__weather__current .weather__icon {
+  font-size: 52px;
+  height: 60px;
+  line-height: 60px;
+  margin-right: 10px;
+}
+.weather__weather__temp__value {
+  font-size: 52px;
+  line-height: 52px;
+  vertical-align: top;
+  display: inline-block;
+}
+.weather__weather__temp__unit {
+  font-size: 18px;
+  display: inline-block;
+  margin-top: 10px;
+  margin-left: 3px;
+  vertical-align: top;
+}
+.weather__weather__description {
+  margin-top: 7px;
+}
+.weather__weather__forecast {
+  align-self: flex-end;
+  display: flex;
+  justify-content: center;
+  align-items: flex-end;
+  min-height: 120px;
+}
+.weather__weather__forecast__item {
+  flex: 1;
+  text-align: center;
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  margin-left: 15px;
+}
+.weather__weather__forecast__item:first-child {
+  margin-left: 0;
+}
+.weather__weather__forecast__item .weather__icon {
+  font-size: 36px;
+  margin-bottom: 10px;
+}
+.weather__weather__forecast__item__min-max {
+  align-self: flex-end;
+}
+.weather__weather__forecast__item__min,
+.weather__weather__forecast__item__max {
+  display: block;
+  width: 50%;
+  font-size: 14px;
+  float: left;
+  line-height: 16px;
+}
+.weather__weather__forecast__item__min {
+  padding-right: 3px;
+}
+.weather__weather__forecast__item__max {
+  padding-left: 3px;
+}
+.weather__weather__forecast__item__description {
+  font-size: 14px;
+  display: block;
+  width: 100%;
+  margin-bottom: 9px;
+}

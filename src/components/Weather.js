@@ -1,25 +1,20 @@
-import React, { Component, PropTypes } from 'react'; // eslint-disable-line no-unused-vars
-import reactMixin                      from 'react-mixin';
-import { ListenerMixin }               from 'reflux';
-import Mozaik                          from 'mozaik/browser';
-import WeatherForecastItem             from './WeatherForecastItem.jsx';
-import { icon as iconHelper }          from './WeatherCodeHelper';
+import _ from 'lodash';
+import React, { Component } from 'react'; // eslint-disable-line no-unused-vars
+import PropTypes from 'prop-types';
+import { Widget, WidgetHeader, WidgetBody } from '@mozaik/ui'
+import WeatherForecastItem from './WeatherForecastItem.js';
+import { icon as iconHelper } from './WeatherCodeHelper';
+import InfoCircleIcon from 'react-icons/lib/fa/info-circle'
 
+import convertKelvinValue from './unit-handling';
+
+import './Weather.css';
 
 // see http://openweathermap.org/weather-conditions for `weather.id` meaning
 
 class Weather extends Component {
-    constructor(props) {
-        super(props);
-
-        this.state = {
-            current:  null,
-            forecast: []
-        };
-    }
-
-    getApiRequest() {
-        const { city, country, lang, limit } = this.props;
+    static getApiRequest(props) {
+        const { city, country, lang, limit } = props;
         const params = {
             city,
             country,
@@ -28,18 +23,15 @@ class Weather extends Component {
         };
 
         return {
-            id:     `weather.combined.${city}.${country}.${lang}.${limit}`,
+            id: `weather.combined.${city}.${country}.${lang}.${limit}`,
+            //id: 'weather.combined',
             params: params
         };
     }
 
-    onApiData(weather) {
-        this.setState(weather);
-    }
-
     render() {
-        const { city, country }     = this.props;
-        const { current, forecast } = this.state;
+        const { apiData={}, city, country, unit } = this.props;
+        const { current, forecast } = apiData;
 
         let descriptionNode = null;
         let tempNode        = null;
@@ -57,23 +49,24 @@ class Weather extends Component {
 
             tempNode = (
                 <span className="weather__weather__temp">
-                    <span className="weather__weather__temp__value">{Math.round(current.main.temp - 273.15)}</span>
-                    <span className="weather__weather__temp__unit">°C</span>
+                    <span className="weather__weather__temp__value">{Math.round(convertKelvinValue(current.main.temp, unit))}</span>
+                    <span className="weather__weather__temp__unit">°{unit}</span>
                 </span>
             );
         }
 
-        const forecastItemNodes = forecast.map((data, i) => (
-            <WeatherForecastItem key={i} {...data} />
+        const forecastItemNodes = _.map(forecast, (data, i) => (
+            <WeatherForecastItem key={i}
+                temp={{max: _.get(data, 'main.temp_max'), min: _.get(data, 'main.temp_min')}}
+                unit={_.get(this.props, 'unit')}
+                weather={_.get(data, 'weather')}
+            />
         ));
 
         return (
-            <div>
-                <div className="widget__header">
-                    <span className="widget__header__subject">{city} - {country}</span>
-                    <i className="fa fa-info-circle" />
-                </div>
-                <div className="widget__body">
+            <Widget>
+                <WidgetHeader title={`${city} - ${country}`} icon={InfoCircleIcon} />
+                <WidgetBody>
                     <div className="weather__weather__current">
                         {iconNode}
                         {tempNode}
@@ -82,8 +75,8 @@ class Weather extends Component {
                     <div className="weather__weather__forecast">
                         {forecastItemNodes}
                     </div>
-                </div>
-            </div>
+                </WidgetBody>
+            </Widget>
         );
     }
 }
@@ -114,16 +107,13 @@ Weather.propTypes = {
         'tr',          // Turkish
         'hr',          // Croatian
         'ca'           // Catalan
-    ]).isRequired
+    ]).isRequired,
+    unit: PropTypes.oneOf(['C', 'F']).isRequired,
 };
 
 Weather.defaultProps = {
     lang:  'en',
     limit: 3
 };
-
-reactMixin(Weather.prototype, ListenerMixin);
-reactMixin(Weather.prototype, Mozaik.Mixin.ApiConsumer);
-
 
 export default Weather;

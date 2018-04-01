@@ -26,11 +26,9 @@
     "dashboard"
   ],
   "dependencies": {
-    "babel-core": "6.7.2",
-    "babel-preset-es2015": "6.6.0",
-    "babel-preset-react": "6.5.0",
-    "babelify": "7.2.0",
     "bluebird": "3.3.4",
+    "cache-manager": "^2.8.0",
+    "cache-manager-fs": "^1.0.6",
     "convict": "^0.6.1",
     "lodash": "3.10.1",
     "memory-cache": "0.0.5",
@@ -40,29 +38,38 @@
     "superagent-bluebird-promise": "3.0.0"
   },
   "devDependencies": {
+    "@mozaik/babel-preset": "^1.0.0-alpha.6",
+    "@mozaik/ui": "^2.0.0-alpha.11",
     "ava": "0.13.0",
-    "babel-eslint": "5.0.0",
-    "babel-register": "6.7.2",
+    "babel-cli": "^6.24.1",
+    "babel-eslint": "^7.2.3",
+    "babel-jest": "^20.0.3",
     "coveralls": "2.11.8",
+    "cross-env": "^5.1.4",
     "enzyme": "2.1.0",
     "eslint": "2.2.0",
-    "eslint-plugin-react": "4.2.2",
+    "eslint-plugin-react": "^7.1.0",
     "mockery": "1.4.1",
     "nock": "7.7.2",
     "nyc": "6.1.1",
-    "react": "^0.13.3",
+    "react": "^15.6.1",
+    "react-dom": "^15.6.1",
+    "react-test-renderer": "^15.6.1",
     "sinon": "1.17.3"
   },
   "peerDependencies": {
-    "mozaik": ">=1.1.0",
-    "react": "^0.13.3"
+    "@mozaik/ui": "^2.0.0-alpha.11",
+    "react": "^15.6.1"
   },
   "scripts": {
     "eslint": "eslint --ext .js --ext .jsx ./src/** ./test/**",
     "test": "ava",
     "test-cover": "nyc ava",
     "coveralls": "nyc report --reporter=text-lcov | coveralls",
-    "cover-report": "nyc report --reporter=lcov && open coverage/lcov-report/index.html"
+    "cover-report": "nyc report --reporter=lcov && open coverage/lcov-report/index.html",
+    "build:commonjs": "cross-env BABEL_ENV=commonjs babel src --out-dir lib",
+    "build:es": "cross-env BABEL_ENV=es babel src --out-dir es",
+    "build": "npm run build:commonjs && npm run build:es"
   },
   "browserify": {
     "transform": [

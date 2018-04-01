@@ -1,10 +1,14 @@
-import React, { Component, PropTypes } from 'react'; // eslint-disable-line no-unused-vars
-import { icon as iconHelper }          from './WeatherCodeHelper';
+import React, { Component } from 'react'; // eslint-disable-line no-unused-vars
+import PropTypes from 'prop-types';
+import { icon as iconHelper } from './WeatherCodeHelper';
 
+import convertKelvinValue from './unit-handling';
+
+import './Weather.css';
 
 class WeatherForecastItem extends Component {
     render() {
-        const { weather, temp } = this.props;
+        const {temp, unit, weather} = this.props;
 
         const icon      = iconHelper(weather[0].id);
         const iconClass = `weather__icon weather__icon--${icon}`;
@@ -19,11 +23,11 @@ class WeatherForecastItem extends Component {
                 <span className="weather__weather__forecast__item__min-max">
                     <span className="weather__weather__forecast__item__min">
                         min.<br />
-                        {Math.round(temp.min - 273.15)}°C
+                        {Math.round(convertKelvinValue(temp.min, unit))}°{unit}
                     </span>
                     <span className="weather__weather__forecast__item__max">
                         max.<br />
-                        {Math.round(temp.max - 273.15)}°C
+                        {Math.round(convertKelvinValue(temp.max, unit))}°{unit}
                     </span>
                 </span>
             </div>
@@ -42,8 +46,9 @@ WeatherForecastItem.propTypes = {
         PropTypes.shape({
             description: PropTypes.string.isRequired
         })
-    ).isRequired
+    ).isRequired,
+    unit: PropTypes.oneOf(['C', 'F']).isRequired,
 };
 
-
 export default WeatherForecastItem;
+
